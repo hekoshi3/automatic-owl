@@ -1,12 +1,10 @@
 import fs from 'fs';
 import path from 'path';
-import { NextApiResponse } from "next";
 import extractChunks from 'png-chunks-extract';
 import encodeChunks from 'png-chunks-encode';
 import PNGtext from 'png-chunk-text';
 
-export async function POST(req: Request,
-  res: NextApiResponse<Response>) {
+export async function POST(req: Request) {
   const body = await req.json();
 
   const buffer = Buffer.from(body.base_image, 'base64');
