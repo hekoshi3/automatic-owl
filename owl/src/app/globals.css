@@ -5,7 +5,8 @@
 }
 
 body {
-  background: #333;/*url("/img/bg/up.webp") no-repeat center center fixed;*/
+  background: #333;
+  /*url("/img/bg/up.webp") no-repeat center center fixed;*/
   background-size: cover;
   margin: 0;
   padding: 0;
@@ -31,7 +32,8 @@ body {
   box-sizing: border-box;
   background-color: rgba(30, 30, 30, 0.85);
   border-radius: 8px;
-  min-height: 90vh;
+  height: 90vh;
+  overflow: hidden;
 }
 
 .center-column {
@@ -40,7 +42,7 @@ body {
 }
 
 .right-column {
-  align-items: flex-end;
+  align-items: flex;
 }
 
 form {
@@ -102,35 +104,43 @@ input::placeholder {
   text-align: center;
 }
 
-.gallery {
-  display:block;
+.gallery-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 1rem;
   padding: 1rem;
-  background-color: rgba(0, 0, 0, 0.3);
   max-height: 90vh;
   overflow-y: auto;
-  justify-items: start;
-  grid-template-columns: repeat(auto-fill, minmax(100vh, 1fr));
-}
-
-.gallery-list {
-  display: flex;
-  flex-direction:row-reverse;
+  align-items: start;
 }
 
 .gallery-image-wrapper {
   width: 100%;
-  max-width: 200px;
-  border-radius: 8px;
+  break-inside: avoid;
   overflow: hidden;
-  background-color: #222;
-  box-shadow: 0 0 5px #0006;
-  margin: 1 auto;
-  padding: 2px;
 }
 
 .gallery-img {
-  display: block;
   width: 100%;
   height: auto;
-  border-radius: 8px;
+  object-fit: cover;
+  display: block;
+}
+
+.gallery-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.gallery-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.gallery-list::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+.gallery-list {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
 }

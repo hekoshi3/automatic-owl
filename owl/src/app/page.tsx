@@ -1,8 +1,9 @@
 "use client"
 
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { sendGeneratePost } from "./components/sendpost";
+import { GalleryImage } from "./components/interfaces";
 
 export default function GeneratePage() {
   const [upprompt, setUpPrompt] = useState('');
@@ -14,9 +15,23 @@ export default function GeneratePage() {
   const [error, setError] = useState('');
   const [MainImagePath, setMainImagePath] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
-  const [gallery, setGallery] = useState<
-    { path: string; width: number; height: number }[]
-  >([]);
+  const [gallery, setGallery] = useState<GalleryImage[]>([]);
+
+  useEffect(() => {
+    const fetchGallery = async () => {
+      try {
+        const res = await fetch("/api/scan");
+        if (!res.ok) throw new Error("Failed to fetch images");
+        const images: GalleryImage[] = await res.json();
+        setGallery(images.reverse());
+      } catch (error) {
+        console.error("Error loading gallery:", error);
+      }
+    };
+
+    fetchGallery();
+  }, []);
+
 
   const generate = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -55,10 +70,10 @@ export default function GeneratePage() {
       setMainImagePath(image_path.path);
       setGallery(prev => [
         {
-        path: image_path.path,
-        width: parseInt(gen_response.parameters.width),
-        height: parseInt(gen_response.parameters.height),
-      },
+          path: image_path.path,
+          width: parseInt(gen_response.parameters.width),
+          height: parseInt(gen_response.parameters.height),
+        },
         ...prev
       ]);
     } else {
@@ -147,18 +162,16 @@ export default function GeneratePage() {
             />
           )}
         </div>
-        <div className="column right-column gallery">
-          <div className="gallery-list">
+        <div className="column right-column">
+          <div className="gallery-list gallery">
             {gallery.map((img, index) => (
               <a key={index} href={img.path} target="_blank" rel="noopener noreferrer">
                 <div className="gallery-image-wrapper">
                   <Image
                     src={img.path}
                     alt={`Generated ${index}`}
-                    layout="responsive"
-                    width={64}
-                    height={Math.round(64 * (img.height / img.width))}
-                    className="gallery-img"
+                    width={190}
+                    height={Math.round(190 * (img.height / img.width))}
                     unoptimized
                   />
                 </div>
