@@ -1,4 +1,4 @@
-import { GenerationResponse } from "./GenerationResponseInterface";
+import { GenerationResponse } from "./interfaces";
 
 export async function sendGeneratePost(prompt: string, nprompt: string, inp_width: number, inp_height: number, steps: number, cfg_scale: number, setError: React.Dispatch<React.SetStateAction<string>>) {
     const genHost = process.env.NEXT_PUBLIC_API_HOST;

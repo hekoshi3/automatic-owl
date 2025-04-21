@@ -1,7 +1,9 @@
 import { NextResponse } from 'next/server';
 import path from 'path';
-import fs from 'fs/promises';
+import fsp from 'fs/promises';
 import sharp from 'sharp';
+import fs from 'fs';
+import { log } from 'console';
 
 const IMAGE_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.webp'];
 
@@ -9,8 +11,18 @@ async function getImagesInDirectory(dir: string): Promise<{ path: string; width:
   const fullDir = path.join(process.cwd(), 'public', dir);
   let result: { path: string; width: number; height: number }[] = [];
 
+  if (!fs.existsSync(path.join(process.cwd(), 'public'))){
+    log("OwlLog || Cannot find requred path at /public; creating",path.join(process.cwd(), 'public'))
+    fs.mkdirSync(path.join(process.cwd(), 'public'));
+  }
+
+  if (!fs.existsSync(path.join(process.cwd(), 'public',dir))){
+    log(`OwlLog || Cannot find requred path at /public/`,dir,"; Creating",path.join(process.cwd(), 'public', dir))
+    fs.mkdirSync(path.join(process.cwd(), 'public', dir));
+  }  
+
   try {
-    const entries = await fs.readdir(fullDir, { withFileTypes: true });
+    const entries = await fsp.readdir(fullDir, { withFileTypes: true });
 
     for (const entry of entries) {
       const entryPath = path.join(dir, entry.name);

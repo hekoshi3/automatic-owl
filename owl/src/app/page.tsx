@@ -16,6 +16,7 @@ export default function GeneratePage() {
   const [MainImagePath, setMainImagePath] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
   const [gallery, setGallery] = useState<GalleryImage[]>([]);
+  //const apiHost = process.env.NEXT_PUBLIC_API_HOST;
 
   useEffect(() => {
     const fetchGallery = async () => {
@@ -31,7 +32,6 @@ export default function GeneratePage() {
 
     fetchGallery();
   }, []);
-
 
   const generate = async (event: React.FormEvent) => {
     event.preventDefault();
