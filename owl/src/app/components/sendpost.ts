@@ -33,7 +33,7 @@ export async function sendGeneratePost(prompt: string, nprompt: string, inp_widt
                 "height": inp_height
             });
         try {
-            const response = await fetch(genHost + '/sdapi/v1/txt2img', {
+            const response = await fetch(genHost + '/generate', {//'/sdapi/v1/txt2img', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
